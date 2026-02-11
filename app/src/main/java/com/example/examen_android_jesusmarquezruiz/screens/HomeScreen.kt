@@ -31,7 +31,7 @@ fun HomeScreen(
     onNavigateToConfirm: (String, String?) -> Unit,
     onLogout: () -> Unit
 ) {
-    val jugadores by productViewModel.jugadores.collectAsState()
+    val jugadores by jugadoresViewModel.jugadores.collectAsState()
 
     Scaffold { innerPadding ->
         Column(
@@ -66,8 +66,8 @@ fun HomeScreen(
                 Column(modifier = Modifier.padding(12.dp)) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         OutlinedTextField(
-                            value = productViewModel.name,
-                            onValueChange = { productViewModel.name = it },
+                            value = jugadoresViewModel.name,
+                            onValueChange = { jugadoresViewModel.name = it },
                             placeholder = { Text("Nombre", fontSize = 14.sp) },
                             modifier = Modifier.weight(1.5f),
                             singleLine = true,
@@ -75,8 +75,8 @@ fun HomeScreen(
                             colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = Color.White, focusedContainerColor = Color.White)
                         )
                         OutlinedTextField(
-                            value = productViewModel.numero,
-                            onValueChange = { productViewModel.numero = it },
+                            value = jugadoresViewModel.numero,
+                            onValueChange = { jugadoresViewModel.numero = it },
                             placeholder = { Text("Numero", fontSize = 14.sp) },
                             modifier = Modifier.weight(1f),
                             singleLine = true,
@@ -88,8 +88,8 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     OutlinedTextField(
-                        value = productViewModel.Posicion,
-                        onValueChange = { productViewModel.posicion = it },
+                        value = jugadoresViewModel.posicion,
+                        onValueChange = { jugadoresViewModel.posicion = it },
                         placeholder = { Text("Posicion", fontSize = 14.sp) },
                         modifier = Modifier.fillMaxWidth(),
                         maxLines = 2,
@@ -100,8 +100,8 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     OutlinedTextField(
-                        value = productViewModel.nacionalidad,
-                        onValueChange = { productViewModel.nacionalidad = it },
+                        value = jugadoresViewModel.nacionalidad,
+                        onValueChange = { jugadoresViewModel.nacionalidad = it },
                         placeholder = { Text("Nacionalidad", fontSize = 14.sp) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
@@ -112,8 +112,8 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     OutlinedTextField(
-                        value = productViewModel.imagen,
-                        onValueChange = { productViewModel.imagen = it },
+                        value = jugadoresViewModel.imagen,
+                        onValueChange = { jugadoresViewModel.imagen = it },
                         placeholder = { Text("URL imagen", fontSize = 14.sp) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
@@ -125,7 +125,7 @@ fun HomeScreen(
 
                     Button(
                         onClick = {
-                            val tipo = if (productViewModel.editingJugadores == null) "agregar" else "editar"
+                            val tipo = if (jugadoresViewModel.editingJugadores == null) "agregar" else "editar"
                             onNavigateToConfirm(tipo, null)
                         },
                         modifier = Modifier.fillMaxWidth().height(44.dp),
