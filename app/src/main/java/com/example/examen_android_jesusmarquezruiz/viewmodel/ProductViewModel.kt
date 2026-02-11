@@ -1,6 +1,12 @@
 package com.example.examen_android_jesusmarquezruiz.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import com.example.examen_android_jesusmarquezruiz.model.Jugadores
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class ProductViewModel : ViewModel(){
     private val db = Firebase.firestore

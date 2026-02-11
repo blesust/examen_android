@@ -76,6 +76,7 @@ dependencies {
 
     // Coil para cargar imágenes desde URL
     implementation(libs.coil.compose)
+    implementation(libs.androidx.material3)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

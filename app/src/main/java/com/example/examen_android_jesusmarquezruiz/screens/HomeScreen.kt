@@ -18,21 +18,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.practica3_firebase_jesusmarquezruiz.model.Product
-import com.example.practica3_firebase_jesusmarquezruiz.ui.theme.ButtonBlue
-import com.example.practica3_firebase_jesusmarquezruiz.ui.theme.CardBackground
-import com.example.practica3_firebase_jesusmarquezruiz.viewmodel.AuthViewModel
-import com.example.practica3_firebase_jesusmarquezruiz.viewmodel.ProductViewModel
+import com.example.examen_android_jesusmarquezruiz.model.Jugadores
+import com.example.examen_android_jesusmarquezruiz.ui.theme.ButtonBlue
+import com.example.examen_android_jesusmarquezruiz.viewmodel.AuthViewModel
+import com.example.examen_android_jesusmarquezruiz.viewmodel.ProductViewModel
 
 @Composable
 fun HomeScreen(
     authViewModel: AuthViewModel,
-    productViewModel: ProductViewModel,
-    onViewProduct: (Product) -> Unit,
+    jugadoresViewModel: ProductViewModel,
+    onViewProduct: (Jugadores) -> Unit,
     onNavigateToConfirm: (String, String?) -> Unit,
     onLogout: () -> Unit
 ) {
-    val productos by productViewModel.productos.collectAsState()
+    val jugadores by productViewModel.jugadores.collectAsState()
 
     Scaffold { innerPadding ->
         Column(
@@ -76,9 +75,9 @@ fun HomeScreen(
                             colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = Color.White, focusedContainerColor = Color.White)
                         )
                         OutlinedTextField(
-                            value = productViewModel.price,
-                            onValueChange = { productViewModel.price = it },
-                            placeholder = { Text("Precio", fontSize = 14.sp) },
+                            value = productViewModel.numero,
+                            onValueChange = { productViewModel.numero = it },
+                            placeholder = { Text("Numero", fontSize = 14.sp) },
                             modifier = Modifier.weight(1f),
                             singleLine = true,
                             shape = RoundedCornerShape(8.dp),
@@ -89,9 +88,9 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     OutlinedTextField(
-                        value = productViewModel.description,
-                        onValueChange = { productViewModel.description = it },
-                        placeholder = { Text("Descripción", fontSize = 14.sp) },
+                        value = productViewModel.Posicion,
+                        onValueChange = { productViewModel.posicion = it },
+                        placeholder = { Text("Posicion", fontSize = 14.sp) },
                         modifier = Modifier.fillMaxWidth(),
                         maxLines = 2,
                         shape = RoundedCornerShape(8.dp),
@@ -101,8 +100,20 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     OutlinedTextField(
-                        value = productViewModel.imageUrl,
-                        onValueChange = { productViewModel.imageUrl = it },
+                        value = productViewModel.nacionalidad,
+                        onValueChange = { productViewModel.nacionalidad = it },
+                        placeholder = { Text("Nacionalidad", fontSize = 14.sp) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        shape = RoundedCornerShape(8.dp),
+                        colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = Color.White, focusedContainerColor = Color.White)
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    OutlinedTextField(
+                        value = productViewModel.imagen,
+                        onValueChange = { productViewModel.imagen = it },
                         placeholder = { Text("URL imagen", fontSize = 14.sp) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
@@ -114,17 +125,17 @@ fun HomeScreen(
 
                     Button(
                         onClick = {
-                            val tipo = if (productViewModel.editingProduct == null) "agregar" else "editar"
+                            val tipo = if (productViewModel.editingJugadores == null) "agregar" else "editar"
                             onNavigateToConfirm(tipo, null)
                         },
                         modifier = Modifier.fillMaxWidth().height(44.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = ButtonBlue),
                         shape = RoundedCornerShape(22.dp)
                     ) {
-                        Text(if (productViewModel.editingProduct == null) "Agregar Producto" else "Actualizar", fontSize = 14.sp)
+                        Text(if (productViewModel.editingJugadores == null) "Agregar Jugador" else "Cancelar", fontSize = 14.sp)
                     }
 
-                    if (productViewModel.editingProduct != null) {
+                    if (productViewModel.editingJugadores != null) {
                         TextButton(
                             onClick = { productViewModel.clearFields() },
                             modifier = Modifier.align(Alignment.CenterHorizontally).height(32.dp)
@@ -137,19 +148,19 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text("Tus Productos", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(bottom = 8.dp))
+            Text("Plantilla temporada 25/26", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(bottom = 8.dp))
 
             LazyColumn(
                 modifier = Modifier.fillMaxWidth().weight(1f),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(bottom = 16.dp)
             ) {
-                items(items = productos) { prod ->
+                items(items = productos) { jug ->
                     ProductListItem(
-                        product = prod,
-                        onView = { onViewProduct(prod) },
-                        onEdit = { productViewModel.startEditing(prod) },
-                        onDelete = { onNavigateToConfirm("eliminar", prod.id) }
+                        jugadores = jug,
+                        onView = { onViewProduct(jug) },
+                        onEdit = { productViewModel.startEditing(jug) },
+                        onDelete = { onNavigateToConfirm("eliminar", jug.id) }
                     )
                 }
             }
