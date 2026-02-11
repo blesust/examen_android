@@ -57,14 +57,6 @@ fun deleteJugador(idJugador: String) {
     jugadoresCollection.document(idJugador).delete()
 }
 
-fun startEditing(jugadores: Jugadores) {
-    name = jugadores.nombre
-    numero = jugadores.numero
-    nacionalidad = jugadores.nacionalidad
-    posicion = jugadores.posicion
-    imagen = jugadores.imagen
-}
-
 fun clearFields(){
     name = ""
     numero = ""
