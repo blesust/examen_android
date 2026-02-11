@@ -11,14 +11,14 @@ import com.example.examen_android_jesusmarquezruiz.navigation.NavRoutes
 import com.example.examen_android_jesusmarquezruiz.navigation.rememberNavManager
 import com.example.examen_android_jesusmarquezruiz.screens.HomeScreen
 import com.example.examen_android_jesusmarquezruiz.screens.JugadoresScreen
+import com.example.examen_android_jesusmarquezruiz.screens.LoginScreen
 import com.example.examen_android_jesusmarquezruiz.viewmodel.AuthViewModel
 import com.example.examen_android_jesusmarquezruiz.viewmodel.ProductViewModel
 
-
 @Composable
-fun PlantillaApp(){
-    val authViewModel : AuthViewModel = viewModel()
-    val jugadorViewModel : ProductViewModel = viewModel()
+fun PlantillaApp() {
+    val authViewModel: AuthViewModel = viewModel()
+    val jugadorViewModel: ProductViewModel = viewModel()
     val navManager = rememberNavManager(initialRoute = NavRoutes.Login)
 
     BackHandler(enabled = navManager.canGoBack()) {
@@ -31,10 +31,9 @@ fun PlantillaApp(){
         onBack = { navManager.popBackStack() }
     ) { route: NavRoutes ->
         when (route) {
-            is NavRoutes.Login -> NavEntry(route){
+            is NavRoutes.Login -> NavEntry(route) {
                 LoginScreen(
                     viewModel = authViewModel,
-                    onNavigateToRegistro = { navManager.navigateTo(NavRoutes.Registro) },
                     onLoginSuccess = { navManager.navigateHome() }
                 )
             }
@@ -42,23 +41,16 @@ fun PlantillaApp(){
                 HomeScreen(
                     authViewModel = authViewModel,
                     jugadoresViewModel = jugadorViewModel,
-                    onViewProduct = { navManager.navigateTo(NavRoutes.Jugadores(it)) },
-                    onNavigateToConfirm = { tipo, id ->
-                        navManager.navigateTo(NavRoutes.Confirmacion(tipo, id))
-                    },
+                    onViewProduct = { navManager.navigateTo(NavRoutes.DetalleJugador(it)) },
                     onLogout = { navManager.navigateTo(NavRoutes.Login) }
                 )
             }
-            is NavRoutes.Jugadores -> NavEntry(route) {
+            is NavRoutes.DetalleJugador -> NavEntry(route) {
                 JugadoresScreen(
-                    jugadores = route.jugadores,
+                    jugadores = route.jugador,
                     onBack = { navManager.popBackStack() }
                 )
             }
-
         }
     }
 }
-
-
-

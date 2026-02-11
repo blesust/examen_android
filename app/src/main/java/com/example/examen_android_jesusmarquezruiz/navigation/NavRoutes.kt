@@ -1,5 +1,6 @@
 package com.example.examen_android_jesusmarquezruiz.navigation
 
+import com.example.examen_android_jesusmarquezruiz.model.Jugadores
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -11,5 +12,5 @@ sealed class NavRoutes {
     data object Home : NavRoutes()
 
     @Serializable
-    data class Jugadores(val jugadores: Jugadores) : NavRoutes()
+    data class DetalleJugador(val jugador: Jugadores) : NavRoutes()
 }

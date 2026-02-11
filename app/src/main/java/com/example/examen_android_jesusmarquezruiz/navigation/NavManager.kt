@@ -1,11 +1,14 @@
 package com.example.examen_android_jesusmarquezruiz.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
 
 class NavManager(initialBackStack: List<NavRoutes> = listOf(NavRoutes.Login)) {
     var backStack by mutableStateOf(initialBackStack)
@@ -13,9 +16,7 @@ class NavManager(initialBackStack: List<NavRoutes> = listOf(NavRoutes.Login)) {
 
     fun navigateTo(route: NavRoutes) {
         backStack = backStack + route
-
     }
-
 
     fun popBackStack() {
         if (backStack.size > 1) {
@@ -30,10 +31,16 @@ class NavManager(initialBackStack: List<NavRoutes> = listOf(NavRoutes.Login)) {
     fun canGoBack(): Boolean = backStack.size > 1
 
     companion object {
+        private val json = Json {
+            serializersModule = SerializersModule { }
+        }
+
         val Saver: Saver<NavManager, *> = listSaver(
-            save = { it.backStack.map { route -> Json.encodeToString(route) } },
+            save = { navManager ->
+                navManager.backStack.map { route -> json.encodeToString(NavRoutes.serializer(), route) }
+            },
             restore = { savedList ->
-                NavManager(savedList.map { Json.decodeFromString<NavRoutes>(it) })
+                NavManager(savedList.map { jsonString -> json.decodeFromString(NavRoutes.serializer(), jsonString) })
             }
         )
     }

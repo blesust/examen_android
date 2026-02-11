@@ -1,25 +1,26 @@
 package com.example.examen_android_jesusmarquezruiz.screens
 
-/*HomeScreen*/
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.examen_android_jesusmarquezruiz.model.Jugadores
-import com.example.examen_android_jesusmarquezruiz.ui.theme.ButtonBlue
 import com.example.examen_android_jesusmarquezruiz.viewmodel.AuthViewModel
 import com.example.examen_android_jesusmarquezruiz.viewmodel.ProductViewModel
 
@@ -28,19 +29,34 @@ fun HomeScreen(
     authViewModel: AuthViewModel,
     jugadoresViewModel: ProductViewModel,
     onViewProduct: (Jugadores) -> Unit,
-    onNavigateToConfirm: (String, String?) -> Unit,
     onLogout: () -> Unit
 ) {
     val jugadores by jugadoresViewModel.jugadores.collectAsState()
+    var showForm by remember { mutableStateOf(false) }
 
-    Scaffold { innerPadding ->
+    Scaffold(
+        containerColor = Color(0xFFF1F8E9),
+        floatingActionButton = {
+            if (!showForm) {
+                FloatingActionButton(
+                    onClick = { 
+                        jugadoresViewModel.clearFields()
+                        showForm = true 
+                    },
+                    containerColor = Color(0xFF2E7D32),
+                    contentColor = Color.White
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Agregar Jugador")
+                }
+            }
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -48,119 +64,126 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                val email = authViewModel.currentUser?.email ?: ""
                 Text(
-                    text = "Bienvenido ${authViewModel.currentUser?.email ?: ""}",
+                    text = "Bienvenido $email",
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    color = Color(0xFF2E7D32)
                 )
-                IconButton(onClick = { authViewModel.logout(onLogout) }, modifier = Modifier.size(32.dp)) {
-                    Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Cerrar sesión", modifier = Modifier.size(20.dp))
+                IconButton(onClick = { authViewModel.logout(onLogout) }) {
+                    Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Cerrar sesión", tint = Color(0xFF2E7D32))
                 }
             }
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFF0F0F0)),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Column(modifier = Modifier.padding(12.dp)) {
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            if (showForm) {
+                Card(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(4.dp),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Nuevo Jugador",
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF2E7D32),
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
                         OutlinedTextField(
                             value = jugadoresViewModel.name,
                             onValueChange = { jugadoresViewModel.name = it },
-                            placeholder = { Text("Nombre", fontSize = 14.sp) },
-                            modifier = Modifier.weight(1.5f),
-                            singleLine = true,
-                            shape = RoundedCornerShape(8.dp),
-                            colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = Color.White, focusedContainerColor = Color.White)
+                            label = { Text("Nombre") },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true
                         )
+                        Spacer(modifier = Modifier.height(8.dp))
                         OutlinedTextField(
                             value = jugadoresViewModel.numero,
                             onValueChange = { jugadoresViewModel.numero = it },
-                            placeholder = { Text("Numero", fontSize = 14.sp) },
-                            modifier = Modifier.weight(1f),
-                            singleLine = true,
-                            shape = RoundedCornerShape(8.dp),
-                            colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = Color.White, focusedContainerColor = Color.White)
+                            label = { Text("Número") },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true
                         )
-                    }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    OutlinedTextField(
-                        value = jugadoresViewModel.posicion,
-                        onValueChange = { jugadoresViewModel.posicion = it },
-                        placeholder = { Text("Posicion", fontSize = 14.sp) },
-                        modifier = Modifier.fillMaxWidth(),
-                        maxLines = 2,
-                        shape = RoundedCornerShape(8.dp),
-                        colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = Color.White, focusedContainerColor = Color.White)
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    OutlinedTextField(
-                        value = jugadoresViewModel.nacionalidad,
-                        onValueChange = { jugadoresViewModel.nacionalidad = it },
-                        placeholder = { Text("Nacionalidad", fontSize = 14.sp) },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        shape = RoundedCornerShape(8.dp),
-                        colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = Color.White, focusedContainerColor = Color.White)
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    OutlinedTextField(
-                        value = jugadoresViewModel.imagen,
-                        onValueChange = { jugadoresViewModel.imagen = it },
-                        placeholder = { Text("URL imagen", fontSize = 14.sp) },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        shape = RoundedCornerShape(8.dp),
-                        colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = Color.White, focusedContainerColor = Color.White)
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Button(
-                        onClick = {
-                            val tipo = if (jugadoresViewModel.editingJugadores == null) "agregar" else "editar"
-                            onNavigateToConfirm(tipo, null)
-                        },
-                        modifier = Modifier.fillMaxWidth().height(44.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = ButtonBlue),
-                        shape = RoundedCornerShape(22.dp)
-                    ) {
-                        Text(if (jugadoresViewModel.editingJugadores == null) "Agregar Jugador" else "Cancelar", fontSize = 14.sp)
-                    }
-
-                    if (jugadoresViewModel.editingJugadores != null) {
-                        TextButton(
-                            onClick = { jugadoresViewModel.clearFields() },
-                            modifier = Modifier.align(Alignment.CenterHorizontally).height(32.dp)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        OutlinedTextField(
+                            value = jugadoresViewModel.posicion,
+                            onValueChange = { jugadoresViewModel.posicion = it },
+                            label = { Text("Posición") },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        OutlinedTextField(
+                            value = jugadoresViewModel.nacionalidad,
+                            onValueChange = { jugadoresViewModel.nacionalidad = it },
+                            label = { Text("Nacionalidad") },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        OutlinedTextField(
+                            value = jugadoresViewModel.imagen,
+                            onValueChange = { jugadoresViewModel.imagen = it },
+                            label = { Text("URL Imagen") },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text("Cancelar", color = Color.Red, fontSize = 12.sp)
+                            Button(
+                                onClick = {
+                                    jugadoresViewModel.addJugador(
+                                        jugadoresViewModel.name,
+                                        jugadoresViewModel.numero,
+                                        jugadoresViewModel.nacionalidad,
+                                        jugadoresViewModel.posicion,
+                                        jugadoresViewModel.imagen
+                                    )
+                                    showForm = false
+                                },
+                                modifier = Modifier.weight(1f),
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32))
+                            ) {
+                                Text("Agregar")
+                            }
+                            OutlinedButton(
+                                onClick = { 
+                                    showForm = false
+                                    jugadoresViewModel.clearFields()
+                                },
+                                modifier = Modifier.weight(1f),
+                                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Red)
+                            ) {
+                                Text("Cancelar")
+                            }
                         }
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text("Plantilla temporada 25/26", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(bottom = 8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                "Plantilla Unicaja Baloncesto",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = Color(0xFF1B5E20),
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
 
             LazyColumn(
                 modifier = Modifier.fillMaxWidth().weight(1f),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(bottom = 16.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = PaddingValues(bottom = 80.dp)
             ) {
                 items(items = jugadores) { jug ->
-                    ProductListItem(
-                        jugadores = jug,
+                    JugadorListItem(
+                        jugador = jug,
                         onView = { onViewProduct(jug) },
-                        onEdit = { jugadoresViewModel.startEditing(jug) },
-                        onDelete = { onNavigateToConfirm("eliminar", jug.id) }
+                        onDelete = { jugadoresViewModel.deleteJugador(jug.id) }
                     )
                 }
             }
@@ -169,47 +192,53 @@ fun HomeScreen(
 }
 
 @Composable
-fun ProductListItem(
-    jugadores: Jugadores,
+fun JugadorListItem(
+    jugador: Jugadores,
     onView: () -> Unit,
-    onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = CardBackground)
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Row(
-            modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.padding(12.dp).fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            AsyncImage(
+                model = jugador.imagen,
+                contentDescription = jugador.nombre,
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(CircleShape)
+                    .background(Color.LightGray),
+                contentScale = ContentScale.Crop
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = jugadores.nombre,
+                    text = jugador.nombre,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
+                    fontSize = 16.sp,
                     color = Color.Black
                 )
                 Text(
-                    text = "${jugadores.numero}",
+                    text = "Número: ${jugador.numero} | ${jugador.posicion}",
                     color = Color.Gray,
-                    fontSize = 13.sp
+                    fontSize = 14.sp
                 )
             }
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = onView, modifier = Modifier.size(36.dp)) {
-                    Icon(imageVector = Icons.Default.Search, contentDescription = "Ver", tint = Color.Black, modifier = Modifier.size(20.dp))
+            Row {
+                IconButton(onClick = onView) {
+                    Icon(Icons.Default.Visibility, contentDescription = "Ver", tint = Color(0xFF2E7D32))
                 }
-                IconButton(onClick = onEdit, modifier = Modifier.size(36.dp)) {
-                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Editar", tint = Color.Black, modifier = Modifier.size(20.dp))
-                }
-                IconButton(onClick = onDelete, modifier = Modifier.size(36.dp)) {
-                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Eliminar", tint = Color(0xFFD32F2F), modifier = Modifier.size(20.dp))
+                IconButton(onClick = onDelete) {
+                    Icon(Icons.Default.Delete, contentDescription = "Eliminar", tint = Color.Red)
                 }
             }
         }

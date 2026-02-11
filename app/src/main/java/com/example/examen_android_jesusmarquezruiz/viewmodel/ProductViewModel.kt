@@ -1,6 +1,5 @@
 package com.example.examen_android_jesusmarquezruiz.viewmodel
 
-
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +11,7 @@ import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class ProductViewModel : ViewModel(){
+class ProductViewModel : ViewModel() {
     private val db = Firebase.firestore
     private val jugadoresCollection = db.collection("jugadores")
 
@@ -30,39 +29,38 @@ class ProductViewModel : ViewModel(){
         getJugadores()
     }
 
-    private fun getJugadores(){
-        jugadoresCollection.addSnapshotListener{ snapshot, e->
-            if (e != null){
+    private fun getJugadores() {
+        jugadoresCollection.addSnapshotListener { snapshot, e ->
+            if (e != null) {
                 Log.w("ProductViewModel", "Listen failed", e)
                 return@addSnapshotListener
             }
-            if (snapshot != null){
-                jugadores.value = snapshot.documents.mapNotNull { doc ->
+            if (snapshot != null) {
+                _jugadores.value = snapshot.documents.mapNotNull { doc ->
                     val jug = doc.toObject(Jugadores::class.java)
-                    jug?.id = doc.id
-                    jug
-
+                    jug?.copy(id = doc.id)
                 }
+            }
         }
     }
-}
 
-fun addJugador(nombre: String, numero: Int, nacionalidad: String, posicion: String, imagen: String) {
-    val jugadores = Jugadores(nombre = nombre, numero = numero, nacionalidad = nacionalidad, posicion = posicion, imagen = imagen)
-    jugadoresCollection.add(jugadores)
-    clearFields()
-}
-
-fun deleteJugador(idJugador: String) {
-    jugadoresCollection.document(idJugador).delete()
-}
-
-fun clearFields(){
-    name = ""
-    numero = ""
-    nacionalidad = ""
-    posicion = ""
-    equipo = ""
-    imagen = ""
-}
+    fun addJugador(nombre: String, numeroStr: String, nacionalidad: String, posicion: String, imagen: String) {
+        val num = numeroStr.toIntOrNull() ?: 0
+        val jugador = Jugadores(nombre = nombre, numero = num, nacionalidad = nacionalidad, posicion = posicion, imagen = imagen)
+        jugadoresCollection.add(jugador)
+        clearFields()
     }
+
+    fun deleteJugador(idJugador: String) {
+        jugadoresCollection.document(idJugador).delete()
+    }
+
+    fun clearFields() {
+        name = ""
+        numero = ""
+        nacionalidad = ""
+        posicion = ""
+        equipo = ""
+        imagen = ""
+    }
+}
