@@ -79,6 +79,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.benchmark.traceprocessor)
     implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.androidx.leanback)
+    implementation(libs.androidx.compose.foundation)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

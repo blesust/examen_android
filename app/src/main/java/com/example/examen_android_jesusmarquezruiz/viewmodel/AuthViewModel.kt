@@ -1,5 +1,11 @@
 package com.example.examen_android_jesusmarquezruiz.viewmodel
 
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+
 class AuthViewModel : ViewModel() {
     private val auth : FirebaseAuth = Firebase.auth
 

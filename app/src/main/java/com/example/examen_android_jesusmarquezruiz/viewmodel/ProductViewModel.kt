@@ -37,10 +37,12 @@ class ProductViewModel : ViewModel(){
                 return@addSnapshotListener
             }
             if (snapshot != null){
-                val jugadores.value = snapshot.toObjects(Jugadores::class.java)
-                jug?.id = doc.id
-                jug
-            }
+                jugadores.value = snapshot.documents.mapNotNull { doc ->
+                    val jug = doc.toObject(Jugadores::class.java)
+                    jug?.id = doc.id
+                    jug
+
+                }
         }
     }
 }
@@ -56,17 +58,14 @@ fun deleteJugador(idJugador: String) {
 }
 
 fun startEditing(jugadores: Jugadores) {
-    editingJugadores = jugadores
     name = jugadores.nombre
     numero = jugadores.numero
     nacionalidad = jugadores.nacionalidad
     posicion = jugadores.posicion
-    equipo = jugadores.equipo
     imagen = jugadores.imagen
 }
 
 fun clearFields(){
-    editingJugadores = null
     name = ""
     numero = ""
     nacionalidad = ""
@@ -74,3 +73,4 @@ fun clearFields(){
     equipo = ""
     imagen = ""
 }
+    }

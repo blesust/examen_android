@@ -19,6 +19,8 @@ firebaseBom = "34.9.0"
 material3 = "1.4.0"
 benchmarkTraceprocessor = "1.4.1"
 firebaseCrashlyticsBuildtools = "3.0.6"
+leanback = "1.2.0"
+foundation = "1.10.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +52,8 @@ firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-benchmark-traceprocessor = { group = "androidx.benchmark", name = "benchmark-traceprocessor", version.ref = "benchmarkTraceprocessor" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
+androidx-leanback = { group = "androidx.leanback", name = "leanback", version.ref = "leanback" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

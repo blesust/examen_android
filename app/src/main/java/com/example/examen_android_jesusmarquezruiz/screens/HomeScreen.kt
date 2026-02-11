@@ -132,12 +132,12 @@ fun HomeScreen(
                         colors = ButtonDefaults.buttonColors(containerColor = ButtonBlue),
                         shape = RoundedCornerShape(22.dp)
                     ) {
-                        Text(if (productViewModel.editingJugadores == null) "Agregar Jugador" else "Cancelar", fontSize = 14.sp)
+                        Text(if (jugadoresViewModel.editingJugadores == null) "Agregar Jugador" else "Cancelar", fontSize = 14.sp)
                     }
 
-                    if (productViewModel.editingJugadores != null) {
+                    if (jugadoresViewModel.editingJugadores != null) {
                         TextButton(
-                            onClick = { productViewModel.clearFields() },
+                            onClick = { jugadoresViewModel.clearFields() },
                             modifier = Modifier.align(Alignment.CenterHorizontally).height(32.dp)
                         ) {
                             Text("Cancelar", color = Color.Red, fontSize = 12.sp)
@@ -155,11 +155,11 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(bottom = 16.dp)
             ) {
-                items(items = productos) { jug ->
+                items(items = jugadores) { jug ->
                     ProductListItem(
                         jugadores = jug,
                         onView = { onViewProduct(jug) },
-                        onEdit = { productViewModel.startEditing(jug) },
+                        onEdit = { jugadoresViewModel.startEditing(jug) },
                         onDelete = { onNavigateToConfirm("eliminar", jug.id) }
                     )
                 }
@@ -170,7 +170,7 @@ fun HomeScreen(
 
 @Composable
 fun ProductListItem(
-    product: Product,
+    jugadores: Jugadores,
     onView: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit
@@ -189,13 +189,13 @@ fun ProductListItem(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = product.nombre,
+                    text = jugadores.nombre,
                     fontWeight = FontWeight.Bold,
                     fontSize = 15.sp,
                     color = Color.Black
                 )
                 Text(
-                    text = "${product.precio} €",
+                    text = "${jugadores.numero}",
                     color = Color.Gray,
                     fontSize = 13.sp
                 )
