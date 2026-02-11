@@ -77,6 +77,8 @@ dependencies {
     // Coil para cargar imágenes desde URL
     implementation(libs.coil.compose)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.benchmark.traceprocessor)
+    implementation(libs.firebase.crashlytics.buildtools)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

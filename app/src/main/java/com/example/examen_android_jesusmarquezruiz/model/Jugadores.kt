@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Jugadores {
-    var id: String = "",
     val nombre: String = "",
     val numero: Int = 0,
     val nacionalidad: String = "",

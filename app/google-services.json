@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "715349010487",
-    "project_id": "nuevoproyecto-86ce9",
-    "storage_bucket": "nuevoproyecto-86ce9.firebasestorage.app"
+    "project_number": "105948763943",
+    "project_id": "examenandroid-5bcd2",
+    "storage_bucket": "examenandroid-5bcd2.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:715349010487:android:a8765b03bf573b3d79f7b2",
+        "mobilesdk_app_id": "1:105948763943:android:c6161e0c95f45bd40b7b02",
         "android_client_info": {
           "package_name": "com.example.examen_android_jesusmarquezruiz"
         }
@@ -15,26 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCOCZL0ie2v2wx5_MWJTSNxP5kjhGCdE34"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:715349010487:android:cae8225be7f0bc2979f7b2",
-        "android_client_info": {
-          "package_name": "com.example.pruebafirestore"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCOCZL0ie2v2wx5_MWJTSNxP5kjhGCdE34"
+          "current_key": "AIzaSyASOYdPQ-wVrbHOiFVSbvedtgesgrh-S9M"
         }
       ],
       "services": {

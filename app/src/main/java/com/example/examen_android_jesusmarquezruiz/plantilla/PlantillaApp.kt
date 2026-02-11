@@ -1,14 +1,24 @@
 package com.example.examen_android_jesusmarquezruiz.plantilla
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.ui.NavDisplay
+import com.example.examen_android_jesusmarquezruiz.navigation.NavRoutes
+import com.example.examen_android_jesusmarquezruiz.navigation.rememberNavManager
+import com.example.examen_android_jesusmarquezruiz.screens.HomeScreen
+import com.example.examen_android_jesusmarquezruiz.screens.JugadoresScreen
+import com.example.examen_android_jesusmarquezruiz.viewmodel.AuthViewModel
 import com.example.examen_android_jesusmarquezruiz.viewmodel.ProductViewModel
 
 
 @Composable
 fun PlantillaApp(){
     val authViewModel : AuthViewModel = viewModel()
-    val jugadoresViewModel : ProductViewModel = viewModel()
+    val jugadorViewModel : ProductViewModel = viewModel()
     val navManager = rememberNavManager(initialRoute = NavRoutes.Login)
 
     BackHandler(enabled = navManager.canGoBack()) {
@@ -31,8 +41,8 @@ fun PlantillaApp(){
             is NavRoutes.Home -> NavEntry(route) {
                 HomeScreen(
                     authViewModel = authViewModel,
-                    productViewModel = jugadoresViewModel,
-                    onViewProduct = { navManager.navigateTo(NavRoutes.Producto(it)) },
+                    jugadoresViewModel = jugadorViewModel,
+                    onViewProduct = { navManager.navigateTo(NavRoutes.Jugadores(it)) },
                     onNavigateToConfirm = { tipo, id ->
                         navManager.navigateTo(NavRoutes.Confirmacion(tipo, id))
                     },
@@ -41,7 +51,7 @@ fun PlantillaApp(){
             }
             is NavRoutes.Jugadores -> NavEntry(route) {
                 JugadoresScreen(
-                    product = route.jugadores,
+                    jugadores = route.jugadores,
                     onBack = { navManager.popBackStack() }
                 )
             }
@@ -49,5 +59,6 @@ fun PlantillaApp(){
         }
     }
 }
+
 
 

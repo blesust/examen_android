@@ -1,6 +1,7 @@
 package com.example.examen_android_jesusmarquezruiz.screens
 
 import android.widget.Toast
+import androidx.benchmark.traceprocessor.Row
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,7 +31,7 @@ import com.example.examen_android_jesusmarquezruiz.viewmodel.AuthViewModel
 
 @OptIn (ExperimentalMaterial3Api::class)
 @Composable
-fun Login(
+fun LoginScreen(
     viewModel: AuthViewModel,
     onNavigateToRegistro: () -> Unit,
     onLoginSuccess: () -> Unit

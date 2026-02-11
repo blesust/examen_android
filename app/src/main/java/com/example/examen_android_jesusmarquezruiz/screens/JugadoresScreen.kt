@@ -49,7 +49,7 @@ fun JugadoresScreen(
                     contentScale = ContentScale.Fit,
                     onError = {
                         Log.e("JugadorsScreen",  "Error al cargar la imagen:")
-                            ${it.result.throwable.message}
+                            {it.result.throwable.message}
                     })
             }
 

@@ -1,6 +1,10 @@
 package com.example.examen_android_jesusmarquezruiz.viewmodel
 
+
+import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.examen_android_jesusmarquezruiz.model.Jugadores
 import com.google.firebase.Firebase
